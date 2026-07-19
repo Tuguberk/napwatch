@@ -1,8 +1,23 @@
-# napwatch
+<p align="center">
+  <img src="assets/banner.svg" alt="napwatch — a terminal UI for diagnosing and controlling macOS power/battery behavior" width="100%">
+</p>
 
-A terminal UI for diagnosing and controlling macOS power/battery behavior — built after discovering that a MacBook's battery was draining to zero overnight because of frequent Power Nap–driven "dark wakes," not any single runaway app.
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/Tuguberk/napwatch?style=flat-square&color=3fb950"></a>
+  <img alt="Platform" src="https://img.shields.io/badge/platform-macOS-0d1117?style=flat-square&logo=apple&logoColor=white">
+  <img alt="Built with Rust" src="https://img.shields.io/badge/built%20with-Rust-CE422B?style=flat-square&logo=rust&logoColor=white">
+  <a href="https://github.com/Tuguberk/homebrew-napwatch"><img alt="Homebrew tap" src="https://img.shields.io/badge/homebrew-tap-FBB040?style=flat-square&logo=homebrew&logoColor=white"></a>
+  <a href="https://github.com/Tuguberk/napwatch/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Tuguberk/napwatch?style=flat-square&color=58a6ff&logo=github"></a>
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/Tuguberk/napwatch?style=flat-square&color=8b949e">
+</p>
 
-It answers three questions live, in one screen:
+<p align="center">
+  Built after discovering a MacBook's battery was draining to zero overnight because of Power Nap–driven <b>"dark wakes"</b> — not a runaway app.
+</p>
+
+---
+
+napwatch answers three questions live, in one screen:
 
 - What's actually consuming power right now (processes, instant Watts)?
 - Is the machine really sleeping, or quietly waking itself up every few minutes?
@@ -10,30 +25,43 @@ It answers three questions live, in one screen:
 
 macOS only. Built in Rust with [ratatui](https://github.com/ratatui/ratatui) + [crossterm](https://github.com/crossterm-rs/crossterm).
 
-## Screen layout
+## Screenshots
 
-```
-┌Battery──────────────────────────────────────────────────────────────────┐
-│ 83% (AC, charging, +24.2W (+44.9%/hr), 0:48 remaining)                  │
-├Wake Stats────────────┬Live Sleep/Wake Feed (newest first)───────────────┤
-│ Sleep count:  1348    │ 18:52:42 Wake     acattach/User                 │
-│ Dark wakes:   1342    │ 07:42:29 Sleep    Low Power Sleep                │
-│ User wakes:   6       │ 07:42:29 DarkWake smc.pow.BatteryStateChange... │
-│ (lifetime, since      │ 07:41:58 Sleep    Sleep Service Back to Sleep   │
-│  last boot)           │ 07:41:56 DarkWake NUB.SPMI0.SW3 .../SleepService│
-├Top Power-Consuming Processes─────────────────────────────────────────────┤
-│ PID    PROCESS            POWER                                         │
-│ 402    WindowServer       16.3                                          │
-│ 537    CloudflareWARP     10.1                                          │
-│ ...                                                                      │
-├Settings (press key to toggle)────────────────────────────────────────────┤
-│ [p] Power Nap: ON        [w] Wake for network access: ON                │
-│ [l] Low Power Mode: OFF  [s] Standby: on   [t] TCP Keepalive: on         │
-│ Disk sleep: 10m   Display sleep: 10m                                    │
-├───────────────────────────────────────────────────────────────────────────┤
-│ q quit   ↑↓/jk select   Enter/i detail   ? help   K kill   +/- renice   │
-└───────────────────────────────────────────────────────────────────────────┘
-```
+**Live dashboard** — battery gauge with instant Watts, wake-event feed, power-ranked process table, settings panel:
+
+<p align="center">
+  <img src="screenshots/main.png" alt="napwatch dashboard" width="850">
+</p>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Process detail** (`Enter`/`i`) — full path, parent, launchd label, app bundle info:
+
+<img src="screenshots/detail.png" alt="napwatch process detail popup" width="100%">
+
+</td>
+<td width="50%" valign="top">
+
+**Settings help** (`?`) — what each toggle does when on vs. off:
+
+<img src="screenshots/help.png" alt="napwatch settings help popup" width="100%">
+
+</td>
+</tr>
+</table>
+
+## Table of contents
+
+- [Features](#features)
+- [Install](#install)
+- [Usage](#usage)
+- [Keybindings](#keybindings)
+- [Debug flags](#debug-flags)
+- [How it gets its data](#how-it-gets-its-data)
+- [Project layout](#project-layout)
+- [Background](#background)
 
 ## Features
 
@@ -102,7 +130,7 @@ napwatch
 
 On first launch it asks for your password once, to enable the settings toggles and cross-user kill/renice. Answer no / let it fail and the app still runs, just without those.
 
-### Keybindings
+## Keybindings
 
 | Key | Action |
 |---|---|
@@ -119,7 +147,7 @@ On first launch it asks for your password once, to enable the settings toggles a
 | `t` | Toggle TCP Keepalive |
 | `?` | Toggle the settings help popup |
 
-### Debug flags
+## Debug flags
 
 These skip the TUI entirely and print raw data to stdout — handy for checking that a data source is parsing correctly:
 
@@ -160,3 +188,9 @@ src/
 ## Background
 
 This started as a one-off investigation into why a MacBook's battery was hitting 0% after sitting closed for a few days. `pmset -g stats` turned up the smoking gun: **1,342 dark wakes against only 6 real user wake-ups** over about a week — the machine was waking itself up roughly every 15 minutes, day and night, for Power Nap–driven mail/iCloud/Calendar sync and FileVault health checks, and that adds up to real drain across many idle days even though each individual wake only lasts a couple of seconds. napwatch grew out of turning that one-time `pmset`/`top`/`ioreg` investigation into a tool that watches for it continuously and lets you act on it without leaving the terminal.
+
+---
+
+<p align="center">
+  <sub>MIT licensed — see <a href="LICENSE">LICENSE</a>.</sub>
+</p>

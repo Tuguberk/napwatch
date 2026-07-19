@@ -1,0 +1,58 @@
+<svg width="1200" height="320" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">napwatch</title>
+  <desc id="desc">A terminal UI for diagnosing and controlling macOS power/battery behavior</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#010409"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="320" rx="18" fill="url(#bg)"/>
+  <rect x="1.5" y="1.5" width="1197" height="317" rx="17" fill="none" stroke="#30363d" stroke-width="1.5"/>
+
+  <!-- window chrome -->
+  <circle cx="34" cy="30" r="7" fill="#ff5f56"/>
+  <circle cx="58" cy="30" r="7" fill="#ffbd2e"/>
+  <circle cx="82" cy="30" r="7" fill="#27c93f"/>
+  <line x1="0" y1="56" x2="1200" y2="56" stroke="#21262d" stroke-width="1.5"/>
+
+  <!-- title -->
+  <text x="60" y="158" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="70" font-weight="700" fill="#e6edf3">nap<tspan fill="#3fb950" filter="url(#glow)">watch</tspan></text>
+  <rect x="424" y="98" width="18" height="58" fill="#3fb950" opacity="0.9"/>
+
+  <!-- subtitle -->
+  <text x="62" y="202" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="21" fill="#8b949e">A terminal UI for diagnosing macOS power/battery</text>
+  <text x="62" y="230" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="21" fill="#8b949e">behavior: dark wakes, drain rate, live control.</text>
+
+  <!-- install teaser prompt -->
+  <text x="62" y="276" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="19" fill="#3fb950">$ <tspan fill="#c9d1d9">brew install napwatch</tspan></text>
+
+  <!-- mini battery gauge -->
+  <text x="860" y="26" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="13" letter-spacing="2" fill="#6e7681">BATTERY</text>
+  <rect x="860" y="36" width="280" height="34" rx="5" fill="none" stroke="#30363d" stroke-width="2"/>
+  <rect x="865" y="41" width="228" height="24" rx="3" fill="#3fb950"/>
+  <text x="979" y="58" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#0a0d12" text-anchor="middle">86% +2.1W</text>
+
+  <!-- mini power ranking -->
+  <text x="860" y="103" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="13" letter-spacing="2" fill="#6e7681">TOP POWER</text>
+  <rect x="860" y="113" width="200" height="11" rx="2" fill="#f85149"/>
+  <rect x="860" y="130" width="150" height="11" rx="2" fill="#d29922"/>
+  <rect x="860" y="147" width="105" height="11" rx="2" fill="#d29922"/>
+
+  <!-- mini live feed -->
+  <text x="860" y="185" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="13" letter-spacing="2" fill="#6e7681">LIVE FEED</text>
+  <text x="860" y="209" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#3fb950">Wake</text>
+  <text x="912" y="209" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#8b949e">acattach/User</text>
+  <text x="860" y="231" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#d29922">DarkWake</text>
+  <text x="944" y="231" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#8b949e">SleepService</text>
+  <text x="860" y="253" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#58a6ff">Sleep</text>
+  <text x="916" y="253" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#8b949e">Low Power Sleep</text>
+</svg>
