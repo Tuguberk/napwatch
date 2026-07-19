@@ -149,7 +149,10 @@ fn handle_toggle(app: &mut App, key: &str) {
         }
     };
     match actions::toggle_bool_setting(key, current) {
-        Ok(()) => app.set_status(format!("{key} -> {}", if current { "off" } else { "on" })),
+        Ok(()) => {
+            app.apply_toggle(key, !current);
+            app.set_status(format!("{key} -> {}", if current { "off" } else { "on" }));
+        }
         Err(e) => app.set_status(format!("error: {e}")),
     }
 }

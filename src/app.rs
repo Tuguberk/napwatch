@@ -10,6 +10,14 @@ const STATUS_TTL: Duration = Duration::from_secs(4);
 /// whole history), so it's fetched far less often than everything else.
 const WAKE_LOG_EVERY_N_TICKS: u32 = 8;
 const WAKE_FEED_CAP: usize = 40;
+/// A poller cycle fetches `settings` fast, then spends ~1.5s in `top -l 2`
+/// before the whole snapshot is sent — so a snapshot can carry settings that
+/// were captured *before* a toggle the user just made, and land *after* it.
+/// Applying it would silently flicker the UI back to the pre-toggle value
+/// until the next fresh cycle corrects it. This window suppresses incoming
+/// settings snapshots for a bit after a local toggle, comfortably longer
+/// than that worst-case in-flight latency.
+const SETTINGS_OVERRIDE_LOCK: Duration = Duration::from_secs(3);
 
 pub struct Snapshot {
     pub battery: Option<BatteryInfo>,
@@ -63,6 +71,7 @@ pub struct App {
     last_wake_timestamp: Option<String>,
     pub status: Option<String>,
     status_set_at: Option<Instant>,
+    settings_override_until: Option<Instant>,
     pub sudo_ok: bool,
 }
 
@@ -83,6 +92,7 @@ impl App {
             last_wake_timestamp: None,
             status: None,
             status_set_at: None,
+            settings_override_until: None,
             sudo_ok,
         }
     }
@@ -113,7 +123,10 @@ impl App {
             self.wake = snap.wake;
         }
         if snap.settings.is_some() {
-            self.settings = snap.settings;
+            let locked = self.settings_override_until.is_some_and(|t| Instant::now() < t);
+            if !locked {
+                self.settings = snap.settings;
+            }
         }
         if !snap.processes.is_empty() {
             if self.selected_pid.is_none() {
@@ -174,6 +187,25 @@ impl App {
         }
         let prev = self.selected_index().saturating_sub(1);
         self.selected_pid = Some(self.processes[prev].pid);
+    }
+
+    /// Reflects a just-succeeded toggle immediately instead of waiting for
+    /// the next poll, and locks out incoming settings snapshots briefly so
+    /// an in-flight (pre-toggle) one can't clobber it — see
+    /// `SETTINGS_OVERRIDE_LOCK`.
+    pub fn apply_toggle(&mut self, key: &str, new_value: bool) {
+        if let Some(s) = &mut self.settings {
+            let field = match key {
+                "powernap" => &mut s.powernap,
+                "womp" => &mut s.womp,
+                "lowpowermode" => &mut s.lowpowermode,
+                "standby" => &mut s.standby,
+                "tcpkeepalive" => &mut s.tcpkeepalive,
+                _ => return,
+            };
+            *field = new_value;
+        }
+        self.settings_override_until = Some(Instant::now() + SETTINGS_OVERRIDE_LOCK);
     }
 
     pub fn request_kill(&mut self) {
