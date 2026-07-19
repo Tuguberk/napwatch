@@ -1,0 +1,12 @@
+[package]
+name = "napwatch"
+version = "0.1.0"
+edition = "2024"
+description = "A terminal UI for diagnosing and controlling macOS power/battery behavior"
+license = "MIT"
+repository = "https://github.com/Tuguberk/napwatch"
+
+[dependencies]
+anyhow = "1.0.104"
+crossterm = "0.29.0"
+ratatui = "0.30.2"
