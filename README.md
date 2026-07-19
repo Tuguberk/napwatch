@@ -96,17 +96,12 @@ Press `?` for an in-app explanation of what each one actually does when on vs. o
 ### Homebrew (recommended)
 
 ```sh
-brew tap Tuguberk/napwatch
-brew install napwatch
+brew install Tuguberk/napwatch/napwatch
 ```
 
-Recent Homebrew versions require trusting third-party taps before their formulae will run:
+This one-liner taps the repo, trusts that specific formula, and installs — all in a single command, no separate `brew tap`/`brew trust` step needed. (Naming the tap and formula out explicitly like this is what Homebrew treats as sufficient intent to auto-trust it; running a bare `brew tap` followed by a bare `brew install napwatch` does *not* auto-trust, and will stop with an "untrusted tap" error asking you to run `brew trust` yourself. Both paths get you to the same place — this one just does it in one step.)
 
-```sh
-brew trust --formula Tuguberk/napwatch/napwatch
-```
-
-This builds from source on your machine (Homebrew pulls in `rust` as a build dependency automatically), so the first install takes a minute or two.
+This builds from source on your machine (Homebrew pulls in `rust` as a build dependency automatically), so the first install takes a minute or two. Uninstalling `napwatch` later will also remove `rust` if nothing else on your system needs it — that's Homebrew correctly cleaning up a dependency that was only there to build this one formula, not a bug.
 
 > **Heads up:** if your Homebrew hasn't auto-updated in a while, `brew install`/`brew tap` will trigger that update first, which can cascade into `brew autoremove` cleaning up formulae that were only installed as (now-orphaned) dependencies of other things. Run `brew update && brew autoremove --dry-run` on its own beforehand if you want to see what that would touch before it happens as a side effect of installing napwatch.
 
