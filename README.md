@@ -72,7 +72,15 @@ brew tap Tuguberk/napwatch
 brew install napwatch
 ```
 
+Recent Homebrew versions require trusting third-party taps before their formulae will run:
+
+```sh
+brew trust --formula Tuguberk/napwatch/napwatch
+```
+
 This builds from source on your machine (Homebrew pulls in `rust` as a build dependency automatically), so the first install takes a minute or two.
+
+> **Heads up:** if your Homebrew hasn't auto-updated in a while, `brew install`/`brew tap` will trigger that update first, which can cascade into `brew autoremove` cleaning up formulae that were only installed as (now-orphaned) dependencies of other things. Run `brew update && brew autoremove --dry-run` on its own beforehand if you want to see what that would touch before it happens as a side effect of installing napwatch.
 
 ### From source
 
